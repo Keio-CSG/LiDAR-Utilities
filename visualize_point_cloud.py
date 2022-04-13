@@ -52,7 +52,7 @@ class VtkPointCloud:
         self.vtkPolyData.GetCellData().SetScalars(self.vtkDepth)
         self.vtkPolyData.GetCellData().SetActiveScalars('DepthArray')
         point_mapper = vtk.vtkPolyDataMapper()
-        point_mapper.SetInput(self.vtkPolyData)
+        point_mapper.SetInputData(self.vtkPolyData)
         point_mapper.SetColorModeToDefault()
         point_mapper.SetScalarRange(zMin, zMax)
         self.point_vtkActor = vtk.vtkActor()
@@ -61,7 +61,7 @@ class VtkPointCloud:
     def init_planes(self):
         self.vtkPlanes = vtk.vtkPlaneSource()
         plane_mapper = vtk.vtkPolyDataMapper()
-        plane_mapper.SetInput(self.vtkPlanes.GetOutput())
+        plane_mapper.SetInputData(self.vtkPlanes.GetOutput())
         self.plane_vtkActor = vtk.vtkActor()
         self.plane_vtkActor.SetMapper(plane_mapper)
 
@@ -168,6 +168,9 @@ def load_data(point_cloud_path):
             data = f.readline()
             if not data:
                 break
+            if not "," in data:
+                continue
+            print("data is:", data.strip())
             point_coords = np.float64(data.strip().split(',')[:3])
             all_point_list.append(point_coords)
             if (point_coords[0] > x_thresh[0]) and (point_coords[0] < x_thresh[1]) and \
@@ -187,6 +190,6 @@ def main(point_cloud_path):
 
 if __name__ == '__main__':
     if len(sys.argv) < 2:
-        print __doc__
+        print(__doc__)
         sys.exit(2)
     main(sys.argv[1])
