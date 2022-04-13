@@ -114,8 +114,8 @@ def unpack(dirs):
                     azimuth += step
                     azimuth %= ROTATION_MAX_UNITS
                     if prev_azimuth is not None and azimuth < prev_azimuth:
-                        file_fmt = os.path.join(dirs, '%Y-%m-%d_%H%M')
-                        path = datetime.now().strftime(file_fmt)
+                        file_fmt = os.path.join(dirs, 'csv')
+                        path = str(file_fmt)
                         try:
                             if os.path.exists(path) is False:
                                 os.makedirs(path)
@@ -125,9 +125,9 @@ def unpack(dirs):
                             timestamp_str = '%.6f' % time.time()
                         else:
                             timestamp_str = '%.6f' % points[0][3]
-                        csv_index = '%08d' % scan_index
-                        save_csv("{}/i{}_{}.csv".format(path, csv_index, timestamp_str), points)
-                        logger.info("{}/i{}_{}.csv".format(path, csv_index, timestamp_str))
+                        csv_index = '%04d' % scan_index
+                        save_csv("{}/i{}.csv".format(path, csv_index), points)
+                        logger.info("{}/i{}.csv".format(path, csv_index))
                         scan_index += 1
                         points = []
                     prev_azimuth = azimuth
@@ -157,8 +157,8 @@ def save_package(dirs, data_queue, terminate_queue):
                 if fp == None or cnt == 1000000:
                     if fp != None:
                         fp.close()
-                    file_fmt = os.path.join(dirs, '%Y-%m-%d_%H%M')
-                    path = str(datetime.now().strftime(file_fmt)) + '.bin'
+                    file_fmt = os.path.join(dirs, 'raw-data')
+                    path = str(file_fmt) + '.bin'
                     logger.info('save to' + path)
                     print('save to ', path)
                     fp = open(path, 'ab')
@@ -199,7 +199,7 @@ if __name__ == "__main__":
         print(__doc__)
         sys.exit(2)
     if sys.argv[1] == 'read':
-        top_dir = datetime.now().strftime('%Y-%m-%d_%H%M%S')
+        top_dir = datetime.now().strftime('%Y%m%d-%H%M')
         processA = Process(target = capture, args = (PORT, DATA_QUEUE, TERMINATE_QUEUE))
         processA.start()
         processB = Process(target = save_package, args = (sys.argv[2] + '/' + top_dir, DATA_QUEUE, TERMINATE_QUEUE))
