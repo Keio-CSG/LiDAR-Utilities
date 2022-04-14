@@ -17,6 +17,9 @@ import sys
 import socket
 
 class CaptureProcess(ProcessBase):
+    """
+    socketでLiDARからのパケットを受け取るプロセス
+    """
     def run(self, put_queue, recv_queue):
         my_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         my_socket.bind(("", 2368))
@@ -32,6 +35,7 @@ class CaptureProcess(ProcessBase):
                         prev_time = time.time()
                         put_queue.put({"data": data, "time": time.time()})
                         count += 1
+                        # 1000パケットで打ち止め
                         if count > 1000:
                             break
                 except Exception as e:
@@ -39,6 +43,7 @@ class CaptureProcess(ProcessBase):
         except KeyboardInterrupt as e:
             print(e)
 
+        # パケットの読み取りが終了したら最後に終了シグナルを投げる
         put_queue.put("TERMINATED")
 
 class SaveCsvProcess(ProcessBase):
@@ -52,13 +57,14 @@ class SaveCsvProcess(ProcessBase):
                 os.makedirs(self.dir)
             if os.path.exists(export_path) is False:
                 os.makedirs(export_path)
-            points = []
+            points = [] # 点群データ
             scan_index = 0
             last_azimuth = None
             while True:
                 if recv_queue.empty():
                     continue
                 received = recv_queue.get()
+                # 終了シグナルだったらプロセスを終了
                 if received == "TERMINATED":
                     break
                 data = received["data"]
@@ -74,21 +80,13 @@ class SaveCsvProcess(ProcessBase):
                     raise ValueError(f"Unexpected device flag: {hex(device)}")
                 if packet.cut_point is not None:
                     points.extend(packet.points[:packet.cut_point])
+                    # 1周分溜まったらcsvに書き出す
                     save_csv(f"{export_path}/i{scan_index:04}.csv", points)
                     print(f"csv saved: {len(points)}")
                     scan_index += 1
                     points = packet.points[packet.cut_point:]
                 else:
                     points.extend(packet.points)
-                # if fp == None or count == 1000000:
-                #     if fp != None:
-                #         fp.close()
-                #     path = os.path.join(dir, "raw-data.bin")
-                #     fp = open(path, "ab")
-                #     count = 0
-                # count += 1
-                # fp.write(b"%.6f" % timestamp)
-                # fp.write(data)
         except KeyboardInterrupt as e:
             print(e)
         
@@ -112,6 +110,3 @@ if __name__ == "__main__":
             queue_save.put(captured)
             break
         queue_save.put(captured)
-    
-    # p_capture.finish()
-    # p_save.finish()
