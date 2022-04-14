@@ -103,7 +103,7 @@ def unpack(dirs):
             data = d[offset + 17 : offset + 1223]
             print(ts, len(data))
             timestamp, factory = struct.unpack_from("<IH", data, offset=1200)
-            assert factory == 0x2237, hex(factory)  # 0x22=VLP-16, 0x37=Strongest Return
+            # assert factory == 0x2237, hex(factory)  # 0x22=VLP-16, 0x37=Strongest Return
             timestamp = float(ts)
             seq_index = 0
             for offset in range(0, 1200, 100):

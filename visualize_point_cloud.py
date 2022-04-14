@@ -170,7 +170,6 @@ def load_data(point_cloud_path):
                 break
             if not "," in data:
                 continue
-            print("data is:", data.strip())
             point_coords = np.float64(data.strip().split(',')[:3])
             all_point_list.append(point_coords)
             if (point_coords[0] > x_thresh[0]) and (point_coords[0] < x_thresh[1]) and \
