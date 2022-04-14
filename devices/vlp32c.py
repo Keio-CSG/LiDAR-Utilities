@@ -9,6 +9,13 @@ LASER_ANGLES = [
     -3    , 7    , 4.667 , -2.333 , -2    , 15   , 10.333, -1.333
 ]
 
+AZIMUTH_OFFSETS = [
+     1.4, -4.2,  1.4, -1.4,  1.4, -1.4,  4.2, -1.4,
+     1.4, -4.2,  1.4, -1.4,  4.2, -1.4,  4.2, -1.4,
+     1.4, -4.2,  1.4, -4.2,  4.2, -1.4,  1.4, -1.4,
+     1.4, -1.4,  1.4, -4.2,  4.2, -1.4,  1.4, -1.4
+]
+
 
 def parse_packet_vlp32c_strongest(timestamp: float, d: bytes, offset: int, last_azimuth=None):
     """
@@ -47,9 +54,10 @@ def parse_packet_vlp32c_strongest(timestamp: float, d: bytes, offset: int, last_
         for channel in range(32):
             distance = channel_data_list[channel*2]
             reflectivity = channel_data_list[channel*2+1]
+            azimuth_offset = AZIMUTH_OFFSETS[channel] * 100.0
             firing_order = channel // 2
             offset_time_sec = (SEQUENCE_TIME_US * seqence_index + PULSE_TIME_US * firing_order) / 1000000.0
             if distance != 0:
-                points.append(calc_point(distance, azimuth, channel, timestamp + offset_time_sec, LASER_ANGLES))
+                points.append(calc_point(distance, azimuth + azimuth_offset, channel, timestamp + offset_time_sec, LASER_ANGLES))
 
-    return ParsedPacket(points, factory, cut_point)
+    return ParsedPacket(points, factory, cut_point), prev_azimuth

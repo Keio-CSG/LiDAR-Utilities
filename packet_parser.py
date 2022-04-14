@@ -22,6 +22,7 @@ def unpack(dirs):
         print(e)
     points = []
     scan_index = 0
+    last_azimuth = None
     for x in files:
         d = open(x, "rb").read()
         n = len(d)
@@ -29,15 +30,15 @@ def unpack(dirs):
             # パケット: 1223 byte
             #     timestamp: 17 byte
             #     data     : 1206 byte
-            last_azimuth = points[-1].azimuth if len(points) > 0 else None
+            # last_azimuth = points[-1].azimuth if len(points) > 0 else None
             timestamp = float(d[offset:offset+17])
             mode, device = struct.unpack_from("<BB", d, offset+17+1204)
             if device == 0x22:
                 print("VLP-16")
-                packet = parse_packet_vlp16_strongest(timestamp, d, offset+17, last_azimuth)
+                packet, last_azimuth = parse_packet_vlp16_strongest(timestamp, d, offset+17, last_azimuth)
             elif device == 0x28:
                 print("VLP-32C")
-                packet = parse_packet_vlp32c_strongest(timestamp, d, offset+17, last_azimuth)
+                packet, last_azimuth = parse_packet_vlp32c_strongest(timestamp, d, offset+17, last_azimuth)
             else:
                 raise ValueError(f"Unexpected device flag: {hex(device)}")
             if packet.cut_point is not None:

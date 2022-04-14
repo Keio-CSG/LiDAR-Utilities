@@ -25,7 +25,6 @@ class SpatialPoint:
         yield from [self.x,self.y,self.z,self.timestamp]
 
 def calc_point(distance, azimuth, laser_id, timestamp, laser_angles) -> SpatialPoint:
-    print(azimuth, laser_id)
     R = distance * DISTANCE_RESOLUTION
     # 垂直方向の角度(rad)
     omega = laser_angles[laser_id] * np.pi / 180.0
