@@ -4,7 +4,6 @@ import numpy as np
 ROTATION_MAX_UNITS = 36000
 SEQUENCE_TIME_US = 55.296
 PULSE_TIME_US = 2.304
-DISTANCE_RESOLUTION = 0.002
 ROTATION_RESOLUTION = 0.01
 
 class ParsedPacket:
@@ -24,8 +23,8 @@ class SpatialPoint:
     def __iter__(self):
         yield from [self.x,self.y,self.z,self.timestamp]
 
-def calc_point(distance, azimuth, laser_id, timestamp, laser_angles) -> SpatialPoint:
-    R = distance * DISTANCE_RESOLUTION
+def calc_point(distance, azimuth, laser_id, timestamp, laser_angles, distance_resolution) -> SpatialPoint:
+    R = distance * distance_resolution
     # 垂直方向の角度(rad)
     omega = laser_angles[laser_id] * np.pi / 180.0
     # 水平方向の角度(rad)
