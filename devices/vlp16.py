@@ -3,6 +3,7 @@ import struct
 from devices.common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_US, ParsedPacket, calc_point
 
 LASER_ANGLES = [-15, 1, -13, 3, -11, 5, -9, 7, -7, 9, -5, 11, -3, 13, -1, 15]
+DISTANCE_RESOLUTION = 0.002 # 2 mm
 
 def parse_packet_vlp16_strongest(timestamp: float, d: bytes, offset: int, last_azimuth=None):
     """
@@ -48,6 +49,9 @@ def parse_packet_vlp16_strongest(timestamp: float, d: bytes, offset: int, last_a
                 reflectivity = channel_data_list[channel*2+1]
                 offset_time_sec = (SEQUENCE_TIME_US * seqence_index + PULSE_TIME_US * channel) / 1000000.0
                 if distance != 0:
-                    points.append(calc_point(distance, azimuth, channel, timestamp + offset_time_sec, LASER_ANGLES))
+                    points.append(calc_point(
+                        distance, azimuth, channel, timestamp + offset_time_sec, 
+                        LASER_ANGLES, DISTANCE_RESOLUTION
+                    ))
 
     return ParsedPacket(points, factory, cut_point), prev_azimuth
