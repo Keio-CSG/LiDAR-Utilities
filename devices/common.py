@@ -23,6 +23,11 @@ class SpatialPoint:
     def __iter__(self):
         yield from [self.x,self.y,self.z,self.timestamp]
 
+    def __len__(self): return 5
+
+    def __getitem__(self, i):
+        return [self.x,self.y,self.z,self.timestamp][i]
+
 def calc_point(distance, azimuth, laser_id, timestamp, laser_angles, distance_resolution) -> SpatialPoint:
     R = distance * distance_resolution
     # 垂直方向の角度(rad)
