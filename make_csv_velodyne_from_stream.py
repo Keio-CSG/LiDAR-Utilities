@@ -2,7 +2,7 @@
 """
     read and save Velodyne data to csv
     usage:
-        ./make_csv_from_stream.py [dir]
+        ./make_csv_velodyne_from_stream.py [out_dir]
 """
 
 from datetime import datetime

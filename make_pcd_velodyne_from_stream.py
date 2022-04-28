@@ -23,12 +23,9 @@ class SavePcdProcess(ProcessBase):
         self.dir = dir
 
     def run(self, put_queue, recv_queue):
-        export_path = str(os.path.join(self.dir, "pcd"))
         try:
             if os.path.exists(self.dir) is False:
                 os.makedirs(self.dir)
-            if os.path.exists(export_path) is False:
-                os.makedirs(export_path)
             points = [] # 点群データ
             scan_index = 0
             last_azimuth = None
@@ -53,7 +50,7 @@ class SavePcdProcess(ProcessBase):
                 if packet.cut_point is not None:
                     points.extend(packet.points[:packet.cut_point])
                     # 1周分溜まったらcsvに書き出す
-                    save_pcd(f"{export_path}/i{scan_index:04}.pcd", points)
+                    save_pcd(f"{self.dir}/i{scan_index:04}.pcd", points)
                     print(f"pcd saved: {len(points)}")
                     scan_index += 1
                     points = packet.points[packet.cut_point:]
@@ -68,7 +65,7 @@ if __name__ == "__main__":
         sys.exit(2)
     top_dir = datetime.now().strftime('%Y%m%d-%H%M')
     p_capture = CaptureProcess()
-    p_save = SavePcdProcess(sys.argv[1] + '/' + top_dir)
+    p_save = SavePcdProcess(str(os.path.join(sys.argv[1],top_dir, "pcd")))
     queue_capture = p_capture.put_queue
     queue_save = p_save.recv_queue
     p_capture.start()

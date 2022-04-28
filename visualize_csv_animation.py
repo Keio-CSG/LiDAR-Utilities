@@ -1,3 +1,9 @@
+"""
+    Animate Point Cloud by CSVs in a specific directory
+    usage:
+        ./visualize_csv_animation.py <directory>
+"""
+
 import open3d as o3d
 import numpy as np
 import os

@@ -5,8 +5,6 @@ from datetime import datetime
 from more_itertools import nth
 import sys
 import open3d as o3d
-import numpy as np
-import matplotlib.pyplot as plt
 HOST_NAME = "os-122201001516.local"
 
 def save_pcd(path, data):
