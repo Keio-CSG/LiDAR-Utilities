@@ -9,10 +9,8 @@ import os
 import sys
 import vtk
 from numpy import random
-import cv2
 from numpy import linalg
 import copy
-import matplotlib.pyplot as plt
 
 
 class VtkPointCloud:
