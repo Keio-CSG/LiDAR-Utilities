@@ -4,7 +4,7 @@ import os
 import sys
 import glob
 
-from process_base import ProcessBase
+from lidar_util.process_base import ProcessBase
 
 TERMINATE_SIGNAL = "TERMINATED"
 POINTS_PER_TURN = 54000

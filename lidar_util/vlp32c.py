@@ -1,6 +1,6 @@
 import struct
 
-from devices.common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_US, ParsedPacket, calc_point
+from common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_US, ParsedPacket, calc_point
 
 LASER_ANGLES = [
     -25   , -1    , -1.667, -15.639, -11.31, 0    , -0.667, -8.843, 

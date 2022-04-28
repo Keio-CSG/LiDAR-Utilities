@@ -4,10 +4,10 @@ import struct
 import sys
 import open3d as o3d
 import numpy as np
-from make_csv_from_stream import CaptureProcess
-from process_base import ProcessBase
-from devices.vlp16 import parse_packet_vlp16_strongest
-from devices.vlp32c import parse_packet_vlp32c_strongest
+from make_csv_velodyne_from_stream import CaptureProcess
+from lidar_util.process_base import ProcessBase
+from lidar_util.vlp16 import parse_packet_vlp16_strongest
+from lidar_util.vlp32c import parse_packet_vlp32c_strongest
 
 def save_pcd(path, data):
     convert = lambda e: [e.x, e.y, e.z]
