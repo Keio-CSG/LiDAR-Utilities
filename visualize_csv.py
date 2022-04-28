@@ -2,7 +2,7 @@
 """
     Visualize Velodyne VLP-16 Point Cloud
     usage:
-        ./visualize_point_cloud.py <file_path>
+        ./visualize_csv.py <file_path>
 """
 import numpy as np
 import os
