@@ -2,16 +2,16 @@
 """
     read and save Velodyne data to csv
     usage:
-        ./make_csv_from_stream.py [dir]
+        ./make_csv_velodyne_from_stream.py [out_dir]
 """
 
 from datetime import datetime
 import struct
 import time
-from devices.vlp16 import parse_packet_vlp16_strongest
-from devices.vlp32c import parse_packet_vlp32c_strongest
-from packet_parser import save_csv
-from process_base import ProcessBase
+from lidar_util.vlp16 import parse_packet_vlp16_strongest
+from lidar_util.vlp32c import parse_packet_vlp32c_strongest
+from lidar_util.packet_parser import save_csv
+from lidar_util.process_base import ProcessBase
 import os
 import sys
 import socket

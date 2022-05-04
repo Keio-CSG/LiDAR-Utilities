@@ -1,8 +1,11 @@
+"""
+    Visualize PCD file by using open3d
+    usage:
+        ./visualize_pcd.py <file_path>
+"""
+
 import open3d as o3d
-import numpy as np
-import os
 import sys
-import glob
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:

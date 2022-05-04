@@ -1,6 +1,6 @@
 import struct
 
-from devices.common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_US, ParsedPacket, calc_point
+from lidar_util.common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_US, ParsedPacket, calc_point
 
 LASER_ANGLES = [-15, 1, -13, 3, -11, 5, -9, 7, -7, 9, -5, 11, -3, 13, -1, 15]
 DISTANCE_RESOLUTION = 0.002 # 2 mm

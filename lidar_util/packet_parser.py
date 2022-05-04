@@ -4,8 +4,8 @@ import csv
 import os
 import sys
 
-from devices.vlp16 import parse_packet_vlp16_strongest
-from devices.vlp32c import parse_packet_vlp32c_strongest
+from lidar_util.vlp16 import parse_packet_vlp16_strongest
+from lidar_util.vlp32c import parse_packet_vlp32c_strongest
 
 def save_csv(path, data):
     with open(path, 'w') as fp:

@@ -1,10 +1,16 @@
+"""
+    Animate Point Cloud by CSVs in a specific directory
+    usage:
+        ./visualize_csv_animation.py <directory>
+"""
+
 import open3d as o3d
 import numpy as np
 import os
 import sys
 import glob
 
-from process_base import ProcessBase
+from lidar_util.process_base import ProcessBase
 
 TERMINATE_SIGNAL = "TERMINATED"
 POINTS_PER_TURN = 54000
