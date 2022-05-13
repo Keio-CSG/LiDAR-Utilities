@@ -98,3 +98,9 @@ optional arguments:
 ```
 > python visualize_pcd.py [file_path]
 ```
+
+# Troubleshooting
+
+Eset等のセキュリティソフトが入っているとLiDARデータを弾いてしまう。
+
+Firewall機能を無効化することでデータ受信が可能となる。
