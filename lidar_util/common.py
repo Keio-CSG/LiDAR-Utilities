@@ -21,12 +21,12 @@ class SpatialPoint:
         self.timestamp = timestamp
 
     def __iter__(self):
-        yield from [self.x,self.y,self.z,self.timestamp]
+        yield from [self.x,self.y,self.z,self.azimuth,self.timestamp]
 
     def __len__(self): return 5
 
     def __getitem__(self, i):
-        return [self.x,self.y,self.z,self.timestamp][i]
+        return [self.x,self.y,self.z,self.azimuth,self.timestamp][i]
 
 def calc_point(distance, azimuth, laser_id, timestamp, laser_angles, distance_resolution) -> SpatialPoint:
     R = distance * distance_resolution
