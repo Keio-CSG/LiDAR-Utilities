@@ -62,7 +62,7 @@ def parse_packet_vlp32c_strongest(timestamp: float, d: bytes, offset: int, last_
             if distance != 0:
                 points.append(calc_point(
                     distance, azimuth + azimuth_offset, channel, timestamp + offset_time_sec, 
-                    LASER_ANGLES, DISTANCE_RESOLUTION
+                    reflectivity, LASER_ANGLES, DISTANCE_RESOLUTION
                 ))
 
     return ParsedPacket(points, factory, cut_point), prev_azimuth

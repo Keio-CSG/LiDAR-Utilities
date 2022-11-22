@@ -1,16 +1,11 @@
 import glob
 import struct
-import csv
 import os
 import sys
 
+from lidar_util.common import save_velo_csv
 from lidar_util.vlp16 import parse_packet_vlp16_strongest
 from lidar_util.vlp32c import parse_packet_vlp32c_strongest
-
-def save_csv(path, data):
-    with open(path, 'w') as fp:
-        wr = csv.writer(fp, delimiter=',')
-        wr.writerows(data)
 
 def unpack(dirs):
     files = glob.glob(dirs + "/*.bin")
@@ -43,7 +38,7 @@ def unpack(dirs):
                 raise ValueError(f"Unexpected device flag: {hex(device)}")
             if packet.cut_point is not None:
                 points.extend(packet.points[:packet.cut_point])
-                save_csv(f"{export_path}/i{scan_index:04}.csv", points)
+                save_velo_csv(f"{export_path}/i{scan_index:04}.csv", points)
                 scan_index += 1
                 points = packet.points[packet.cut_point:]
             else:

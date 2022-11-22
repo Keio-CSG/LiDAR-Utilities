@@ -8,9 +8,10 @@
 from datetime import datetime
 import struct
 import time
+
+from lidar_util.common import save_velo_csv
 from lidar_util.vlp16 import parse_packet_vlp16_strongest
 from lidar_util.vlp32c import parse_packet_vlp32c_strongest
-from lidar_util.packet_parser import save_csv
 from lidar_util.process_base import ProcessBase
 import os
 import sys
@@ -81,7 +82,7 @@ class SaveCsvProcess(ProcessBase):
                 if packet.cut_point is not None:
                     points.extend(packet.points[:packet.cut_point])
                     # 1周分溜まったらcsvに書き出す
-                    save_csv(f"{export_path}/i{scan_index:04}.csv", points)
+                    save_velo_csv(f"{export_path}/i{scan_index:04}.csv", points)
                     print(f"csv saved: {len(points)}")
                     scan_index += 1
                     points = packet.points[packet.cut_point:]
