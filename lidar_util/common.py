@@ -48,13 +48,13 @@ class SpatialPoint:
             self.x,self.y,self.z][i]
 
 def save_velo_csv(path: str, points: List[SpatialPoint]):
-    with open(path, 'w') as fp:
+    with open(path, 'w', newline="") as fp:
         wr = csv.writer(fp, delimiter=',')
-    wr.writerow([
-        "intensity","laser_id","azimuth","distance_m","adjustedtime",
-        "timestamp","vertical_angle","Points_m_XYZ:0","Points_m_XYZ:1","Points_m_XYZ:2"
-    ])
-    wr.writerows(points)
+        wr.writerow([
+            "intensity","laser_id","azimuth","distance_m","adjustedtime",
+            "timestamp","vertical_angle","Points_m_XYZ:0","Points_m_XYZ:1","Points_m_XYZ:2"
+        ])
+        wr.writerows(points)
 
 def calc_point(
         distance: int, azimuth: int, laser_id: int,
