@@ -15,13 +15,16 @@ import argparse
 from ouster import client
 
 
-def save_pcd(path, data):
+def save_pcd(path, data_p, data_i):
+    device = o3d.core.Device("CPU:0")
+    dtype = o3d.core.float32
     #convert = lambda e: [e.x, e.y, e.z]
     #data = np.array(list(map(convert, data)))
-    pcd = o3d.geometry.PointCloud()
-    pcd.points = o3d.utility.Vector3dVector(data)
+    pcd = o3d.t.geometry.PointCloud(device)
+    pcd.point["positions"] = o3d.core.Tensor(data_p, dtype, device)
+    pcd.point["intensity"] = o3d.core.Tensor(data_i.reshape(-1, 1), dtype, device)
 
-    o3d.io.write_point_cloud(path, pcd)
+    o3d.t.io.write_point_cloud(path, pcd)
 
 
 def pcap2pcd_velodyne(pcap_file, model, out_dir, rpm=600, dual=False):
@@ -38,17 +41,21 @@ def pcap2pcd_velodyne(pcap_file, model, out_dir, rpm=600, dual=False):
         for i in range(0, cloud_arrays_np.shape[0], 2):
             array1 = cloud_arrays_np[i]
             array2 = cloud_arrays_np[i+1]
-            array1 = array1[:, 0:3]
-            array2 = array2[:, 0:3]
-            array = np.concatenate([array1, array2], 0)
-            print(array.shape)
-            save_pcd(out_dir + str(i//2) + ".pcd", array)
+            array1_positions = array1[:, 0:3]
+            array1_intensity = array1[:, 3]
+            array2_positions = array2[:, 0:3]
+            array2_intensity = array2[:, 3]
+            array_positions = np.concatenate([array1_positions, array2_positions], 0)
+            array_intensity = np.concatenate([array1_intensity, array2_intensity], 0)
+            print(array_positions.shape, array_intensity.shape)
+            save_pcd(out_dir + str(i//2) + ".pcd", array_positions, array_intensity)
     else:
         for i in range(cloud_arrays_np.shape[0]):
             array = cloud_arrays_np[i]
-            array = array[:, 0:3]
-            print(array.shape)
-            save_pcd(out_dir + str(i) + ".pcd", array)
+            array_positions = array[:, 0:3]
+            array_intensity = array[:, 3]
+            print(array_positions.shape, array_intensity.shape)
+            save_pcd(out_dir + str(i) + ".pcd", array_positions, array_intensity)
 
 
 def pcap2pcd_ouster(pcap_file, metadata, out_dir):
