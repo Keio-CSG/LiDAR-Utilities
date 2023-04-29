@@ -5,6 +5,13 @@ from lidar_util.common import PULSE_TIME_US, ROTATION_MAX_UNITS, SEQUENCE_TIME_U
 LASER_ANGLES = [-15, 1, -13, 3, -11, 5, -9, 7, -7, 9, -5, 11, -3, 13, -1, 15]
 DISTANCE_RESOLUTION = 0.002 # 2 mm
 
+def has_cut_point(d: bytes, offset: int) -> bool:
+    data = d[offset:offset+1206]
+    first_azimuth = (struct.unpack_from("<H", data, 0 + 2)[0]) % ROTATION_MAX_UNITS
+    last_azimuth = (struct.unpack_from("<H", data, 1100 + 2)[0] + 1) % ROTATION_MAX_UNITS
+
+    return first_azimuth > last_azimuth
+
 def parse_packet_vlp16_strongest(timestamp: float, d: bytes, offset: int, last_azimuth=None):
     """
     保存したpacketのdataをパースする
