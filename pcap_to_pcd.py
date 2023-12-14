@@ -24,28 +24,25 @@ def save_pcd(path, data):
     o3d.io.write_point_cloud(path, pcd)
 
 
-def pcap2pcd_velodyne(pcap_file, model, out_dir, rpm=600, dual=False):
+def pcap2pcd_velodyne(pcap_file, model, out_dir, rpm=600, dual=True):
     config = vd.Config(model=model, rpm=rpm)
     cloud_arrays = []
     for stamp, points in vd.read_pcap(pcap_file, config):
-        cloud_arrays.append(points)
 
-    cloud_arrays_np = np.array(cloud_arrays)
-
-    print(cloud_arrays_np.shape[0])
+        cloud_arrays.append(points.tolist())
 
     if dual == True:
-        for i in range(0, cloud_arrays_np.shape[0], 2):
-            array1 = cloud_arrays_np[i]
-            array2 = cloud_arrays_np[i+1]
+        for i in range(0, len(cloud_arrays), 2):
+            array1 = np.array(cloud_arrays[i])
+            array2 = np.array(cloud_arrays[i+1])
             array1 = array1[:, 0:3]
             array2 = array2[:, 0:3]
             array = np.concatenate([array1, array2], 0)
             print(array.shape)
             save_pcd(out_dir + str(i//2) + ".pcd", array)
     else:
-        for i in range(cloud_arrays_np.shape[0]):
-            array = cloud_arrays_np[i]
+        for i in range(len(cloud_arrays)):
+            array = np.array(cloud_arrays[i])
             array = array[:, 0:3]
             print(array.shape)
             save_pcd(out_dir + str(i) + ".pcd", array)

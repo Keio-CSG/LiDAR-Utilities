@@ -57,7 +57,7 @@ PCAP はパケットキャプチャしたデータを保存するファイルで
 ### Velodyne(VeloView)からの場合
 
 `pcap_file_path`に pcap、`out_dir`に保存先を指定<br>
-`model`は['VLP16', '32C', '32E', 'VLS128']に対応
+`model`は['HDL-32E', 'HDL-64E', 'HDL-64E_S2', 'HDL-64E_S3', 'VLP-16', 'VLP-32C', 'Alpha Prime']に対応
 
 ```
 > python pcap_to_pcd.py [velodyne or v] [pcap_file_path] [model] [out_dir]
@@ -69,7 +69,7 @@ PCAP はパケットキャプチャしたデータを保存するファイルで
 optional arguments:
   -h, --help            show this help message and exit
   --rpm RPM, -r RPM     rpm setting
-  --dual, -d            dual setting
+  --dual, -d            dual setting（つけるとTrueになる）
 ```
 
 ### Ouster(Ouster Studio)からの場合
