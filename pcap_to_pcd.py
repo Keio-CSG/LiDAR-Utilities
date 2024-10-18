@@ -16,7 +16,17 @@ def save_pcd(path, data):
 
     o3d.io.write_point_cloud(path, pcd)
 
-def pcap2pcd_velodyne(pcap_file, model, out_dir, rpm=600, dual=False):
+def pcap2pcd_velodyne(
+    pcap_file, 
+    model, 
+    out_dir, 
+    rpm=600, 
+    dual=False,
+    min_angle=0,
+    max_angle=360,
+    min_range=0,
+    max_range=200,
+):
     config = vd.Config(model=model, rpm=rpm)
     cloud_arrays = []
     for stamp, points in vd.read_pcap(pcap_file, config):
